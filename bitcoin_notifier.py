@@ -3,7 +3,7 @@ import time
 from plyer import notification
 import datetime
 
-alert_amount = 50000
+
 bitcoin_rate = None
 
 now = datetime.datetime.now()
@@ -11,23 +11,23 @@ now = now.strftime("%d/%m %H:%M")
 
 URL = "https://api.coindesk.com/v1/bpi/currentprice.json"
 
-try:
-    response = requests.get(URL,
-      headers={"Accept": "application/json"},
-    )
-    data = response.json()
-    bpi = data['bpi']
-    USD = bpi['USD']
-    bitcoin_rate = int(USD['rate_float'])
+while True:
+    try:
+        response = requests.get(URL,
+          headers={"Accept": "application/json"},
+        )
+        data = response.json()
+        bpi = data['bpi']
+        USD = bpi['USD']
+        bitcoin_rate = int(USD['rate_float'])
 
-    print("[+] We are live [+]")
+        print("[+] We are live [+]")
 
-except:
-    print('Something is wrong, Do you have Internet!')
+    except:
+        print('Something is wrong, Do you have Internet!')
 
 
-while bitcoin_rate:
-        notification.notify(
+    notification.notify(
             #title of the notification,
             title = f"Bitcoin Price Alert!! {now}",
 
@@ -43,4 +43,4 @@ while bitcoin_rate:
         )
 
         #notification repeats after every 5 Minutes
-        time.sleep(300)
+    time.sleep(30)
